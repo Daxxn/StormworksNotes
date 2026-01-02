@@ -15,6 +15,13 @@ public partial class App : Application
 {
    public static SettingsModel Settings { get; private set; } = new();
    public static MainViewModel MainVM { get; private set; } = new();
+
+   public static void SaveSettings(SettingsModel settings)
+   {
+      Settings = settings;
+      SettingsManager.OnExit(Settings, nameof(StormworksNotes));
+   }
+
    protected override void OnStartup(StartupEventArgs e)
    {
       Settings = SettingsManager.OnStartup<SettingsModel>(nameof(StormworksNotes));

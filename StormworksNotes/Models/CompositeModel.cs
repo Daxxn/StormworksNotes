@@ -12,7 +12,7 @@ namespace StormworksNotes.Models;
 public class CompositeModel : Model
 {
    #region Local Props
-   private string? _name = "Composite Signal";
+   private string? _name = null;
    private string? _desc = null;
    private SignalDirection _direction = SignalDirection.INPUT;
    private SignalModel[] _boolSignals = new SignalModel[ProjConstants.COMP_SIGNAL_LEN];

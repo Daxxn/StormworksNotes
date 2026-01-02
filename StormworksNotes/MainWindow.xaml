@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:StormworksNotes"
         xmlns:utils="clr-namespace:StormworksNotes.Utils"
         xmlns:enums="clr-namespace:StormworksNotes.Models.Enums"
+        xmlns:viewmodels="clr-namespace:StormworksNotes.ViewModels"
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
         Title="Stormworks Signal Notes" Height="900" Width="1400">
   <Window.Resources>
@@ -23,225 +25,168 @@
 
     <Menu Grid.Row="0">
       <MenuItem Header="File">
-        <MenuItem Header="New" Command="{Binding Path=NewVehicleCmd}"/>
-        <MenuItem Header="Save" Command="{Binding Path=SaveVehicleCmd}"/>
-        <MenuItem Header="Save Copy" Command="{Binding Path=SaveAsVehicleCmd}"/>
-        <MenuItem Header="Open" Command="{Binding Path=OpenVehicleCmd}"/>
+        <MenuItem Header="New" Command="{Binding NewVehicleCmd}"/>
+        <MenuItem Header="Save" Command="{Binding SaveVehicleCmd}"/>
+        <MenuItem Header="Save Copy" Command="{Binding SaveAsVehicleCmd}"/>
+        <MenuItem Header="Open" Command="{Binding OpenVehicleCmd}"/>
       </MenuItem>
+      <MenuItem Header="Settings" Click="SettingsMenuItem_Click"/>
     </Menu>
 
-    <Grid Grid.Row="1">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="5"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-
-      <Grid Grid.Column="0">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0">
+    <TabControl Grid.Row="1">
+      <TabItem Header="Vehicle">
+        <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-          </Grid.RowDefinitions>
 
-          <TextBlock Grid.Row="0" Grid.Column="0" Padding="4,0,10,0">Vehicle</TextBlock>
-          <TextBox Grid.Row="0" Grid.Column="1" MinWidth="80" Text="{Binding Path=Vehicle.Name}"/>
+          <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-          <TextBlock Grid.Row="1" Grid.Column="0" Padding="4,0,10,0">Desc</TextBlock>
-          <TextBox Grid.Row="1" Grid.Column="1" MinWidth="80" Text="{Binding Path=Vehicle.Description}"/>
-        </Grid>
-      </Grid>
+            <Grid Grid.Row="0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
 
-      <Border Grid.Column="1" Padding="2">
-        <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-          </Grid.RowDefinitions>
+              <TextBlock Grid.Row="0" Grid.Column="0" Padding="4,0,10,0">Vehicle</TextBlock>
+              <TextBox Grid.Row="0" Grid.Column="1" MinWidth="80" Text="{Binding Vehicle.Name, UpdateSourceTrigger=PropertyChanged}"/>
 
-          <TextBlock Grid.Row="0" Padding="4,0,0,0">Components</TextBlock>
-          <ListView Grid.Row="1" MinWidth="100" ItemsSource="{Binding Path=Vehicle.Components}" SelectedItem="{Binding Path=SelectedComponent}">
-            <ListView.ItemTemplate>
-              <DataTemplate>
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                  </Grid.ColumnDefinitions>
+              <TextBlock Grid.Row="1" Grid.Column="0" Padding="4,0,10,0">Desc</TextBlock>
+              <TextBox Grid.Row="1" Grid.Column="1" MinWidth="80" Text="{Binding Vehicle.Description}"/>
+            </Grid>
+
+            <TabControl Grid.Row="3">
+              <TabItem Header="Blocks">
+                <Grid Grid.Row="3">
                   <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                   </Grid.RowDefinitions>
 
-                  <TextBlock Grid.Column="0">Name</TextBlock>
-                  <TextBox Grid.Column="1" Text="{Binding Path=Name}"/>
-                  <TextBlock Grid.Column="2">Desc</TextBlock>
-                  <TextBox Grid.Column="3" Text="{Binding Path=Description}"/>
-
-                  <Grid Grid.Row="1" Grid.ColumnSpan="2">
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="Auto"/>
-                      <ColumnDefinition Width="Auto"/>
-                      <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                  <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
                       <RowDefinition Height="Auto"/>
                       <RowDefinition Height="Auto"/>
                       <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">Signals</TextBlock>
-                    <TextBlock Grid.Row="1" Grid.Column="0" MinWidth="50">ON/OFF</TextBlock>
-                    <TextBlock Grid.Row="1" Grid.Column="1" MinWidth="50">Number</TextBlock>
-                    <TextBlock Grid.Row="1" Grid.Column="2" MinWidth="50">Composite</TextBlock>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Path=BoolSignals.Count}"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=NumberSignals.Count}"/>
-                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Path=CompositeSignals.Count}"/>
+                    <Button Grid.Row="0" Command="{Binding AddBlockToProjCmd}">Add Block To Vehicle</Button>
+                    <Grid Grid.Row="1">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                      </Grid.ColumnDefinitions>
+                      <TextBox Grid.Column="0" Text="{Binding BlockSearchText}"/>
+                      <Button Grid.Column="1" Command="{Binding SearchBlocksCmd}">Search</Button>
+                    </Grid>
+                    <Button Grid.Row="2" Command="{Binding SortBlocksCmd}">Sort A-Z</Button>
                   </Grid>
+                  <ListView Grid.Row="1" ItemsSource="{Binding BlockData.Blocks}" SelectedItem="{Binding SelectedBlock, UpdateSourceTrigger=PropertyChanged}">
+                    <ListView.ItemTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                      </DataTemplate>
+                    </ListView.ItemTemplate>
+                  </ListView>
                 </Grid>
-              </DataTemplate>
-            </ListView.ItemTemplate>
-          </ListView>
-          <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Command="{Binding Path=DeleteComponentCmd}">Delete</Button>
-            <Button Grid.Column="2" Command="{Binding Path=AddComponentCmd}">Add</Button>
-          </Grid>
-        </Grid>
-      </Border>
+              </TabItem>
+              <TabItem Header="Saved MCUs">
+                <Grid Grid.Row="3">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                  </Grid.RowDefinitions>
 
-      <GridSplitter Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-
-      <Border Grid.Column="3" Padding="2">
-        <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="*" MinHeight="16"/>
-            <RowDefinition Height="4"/>
-            <RowDefinition Height="*" MinHeight="16"/>
-            <RowDefinition Height="4"/>
-            <RowDefinition Height="*" MinHeight="40"/>
-          </Grid.RowDefinitions>
-
-          <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="*"/>
-              <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0">ON/OFF Signals</TextBlock>
-            <DataGrid Grid.Row="1" ItemsSource="{Binding Path=SelectedComponent.BoolSignals}" SelectedItem="{Binding Path=SelectedComponent.SelectedSignal}">
-              <DataGrid.Columns>
-                <DataGridTextColumn Header="Ch" Binding="{Binding Path=Channel}"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"/>
-                <DataGridTemplateColumn Header="Direction">
-                  <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                      <TextBlock Text="{Binding Path=Direction}"/>
-                    </DataTemplate>
-                  </DataGridTemplateColumn.CellTemplate>
-                  <DataGridTemplateColumn.CellEditingTemplate>
-                    <DataTemplate>
-                      <ComboBox ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:SignalDirection}}}" SelectedItem="{Binding Path=Direction}"/>
-                    </DataTemplate>
-                  </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Desc" Width="*" Binding="{Binding Path=Description}"/>
-              </DataGrid.Columns>
-            </DataGrid>
-            
-            <Grid Grid.Row="2">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <Button Grid.Column="0" Command="{Binding Path=DeleteSignalCmd}" CommandParameter="bool">Delete</Button>
-              <Button Grid.Column="2" Command="{Binding Path=AddSignalCmd}" CommandParameter="bool">Add</Button>
-            </Grid>
+                  <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Button
+                      Grid.Row="0"
+                      Command="{Binding AddMcuToProjCmd}"
+                      ToolTip="Add to the vehicle."
+                    >
+                      Add MCU To Vehicle
+                    </Button>
+                    <Button
+                      Grid.Row="1"
+                      Command="{Binding AddToSavedMcusCmd}"
+                      ToolTip="Add the selected component to the saved MCUs"
+                    >
+                      Add To Saved MCUs
+                    </Button>
+                    <Button
+                      Grid.Row="2"
+                      Command="{Binding ReplaceCompCmd}"
+                      ToolTip="Replace the selected component from the vehicle with the selected saved MCU."
+                    >
+                      Replace Component
+                    </Button>
+                    <Button
+                      Grid.Row="3"
+                      Command="{Binding ReplaceMcuCmd}"
+                      ToolTip="Replace the selected MCU with the selected component from the vehicle."
+                    >
+                      Replace MCU
+                    </Button>
+                  </Grid>
+                  <ListView Grid.Row="1" ItemsSource="{Binding SavedMCUs.MCUs}" SelectionMode="Single" SelectedItem="{Binding SelectedMcu, UpdateSourceTrigger=PropertyChanged}">
+                    <ListView.ItemTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                      </DataTemplate>
+                    </ListView.ItemTemplate>
+                  </ListView>
+                </Grid>
+              </TabItem>
+            </TabControl>
           </Grid>
 
-          <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-
-          <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="*"/>
-              <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0">Number Signals</TextBlock>
-            <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=SelectedComponent.NumberSignals}" SelectedItem="{Binding Path=SelectedComponent.SelectedSignal}">
-              <DataGrid.Columns>
-                <DataGridTextColumn Header="Ch" Binding="{Binding Path=Channel}"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"/>
-                <DataGridTemplateColumn Header="Direction">
-                  <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                      <TextBlock Text="{Binding Path=Direction}"/>
-                    </DataTemplate>
-                  </DataGridTemplateColumn.CellTemplate>
-                  <DataGridTemplateColumn.CellEditingTemplate>
-                    <DataTemplate>
-                      <ComboBox ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:SignalDirection}}}" SelectedItem="{Binding Path=Direction}"/>
-                    </DataTemplate>
-                  </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Min" Binding="{Binding Path=NumberRange.Min}"/>
-                <DataGridTextColumn Header="Max" Binding="{Binding Path=NumberRange.Max}"/>
-                <DataGridTextColumn Header="Desc" Width="*" Binding="{Binding Path=Description}"/>
-              </DataGrid.Columns>
-            </DataGrid>
-            
-            <Grid Grid.Row="2">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <Button Grid.Column="0" Command="{Binding Path=DeleteSignalCmd}" CommandParameter="number">Delete</Button>
-              <Button Grid.Column="2" Command="{Binding Path=AddSignalCmd}" CommandParameter="number">Add</Button>
-            </Grid>
-          </Grid>
-
-          <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-
-          <Grid Grid.Row="4">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0">Composite Signals</TextBlock>
-            <Grid Grid.Row="1">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" MinWidth="148"/>
-                <ColumnDefinition Width="4"/>
-                <ColumnDefinition Width="*"/>
-              </Grid.ColumnDefinitions>
+          <Border Grid.Column="1" Padding="2">
+            <Grid>
               <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
               </Grid.RowDefinitions>
-              <ListView Grid.Column="0" MinWidth="100" ItemsSource="{Binding Path=SelectedComponent.CompositeSignals}" SelectedItem="{Binding Path=SelectedComponent.SelectedComposite}">
+
+              <TextBlock Grid.Row="0" Padding="4,0,0,0">Components</TextBlock>
+              <ListView Grid.Row="1" MinWidth="100" ItemsSource="{Binding Vehicle.Components}" SelectedItem="{Binding Path=SelectedComponent}">
                 <ListView.ItemTemplate>
                   <DataTemplate>
-                    <Border Padding="2" Margin="2,4" BorderBrush="Gray" BorderThickness="1">
-                      <Grid>
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                      </Grid.ColumnDefinitions>
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                      </Grid.RowDefinitions>
+
+                      <TextBlock Grid.Row="0" Grid.Column="0">Name</TextBlock>
+                      <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                      <TextBlock Grid.Row="1" Grid.Column="0">Desc</TextBlock>
+                      <TextBox Grid.Row="1" Grid.Column="1" MaxWidth="200" Text="{Binding Description}"/>
+
+                      <Grid Grid.Row="2" Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>
                           <ColumnDefinition Width="Auto"/>
                           <ColumnDefinition Width="Auto"/>
@@ -250,82 +195,746 @@
                         <Grid.RowDefinitions>
                           <RowDefinition Height="Auto"/>
                           <RowDefinition Height="Auto"/>
+                          <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <TextBox Grid.Column="0" Grid.ColumnSpan="3" MinWidth="50" Text="{Binding Path=Name}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Padding="2,0,4,0">Desc</TextBlock>
-                        <TextBox Grid.Row="1" Grid.Column="1" MinWidth="30" Text="{Binding Path=Description}"/>
-                        <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:SignalDirection}}}" SelectedItem="{Binding Path=Direction}"/>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">Signals</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="0" MinWidth="50">ON/OFF</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="1" MinWidth="50">Number</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="2" MinWidth="50">Composite</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding BoolSignals.Count}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding NumberSignals.Count}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding CompositeSignals.Count}"/>
                       </Grid>
-                    </Border>
+                    </Grid>
                   </DataTemplate>
                 </ListView.ItemTemplate>
               </ListView>
-
-              <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-
-              <Grid Grid.Column="2" Grid.RowSpan="2">
-                <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto"/>
-                  <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="1">
-                  <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                  </Grid.RowDefinitions>
-
-                  <TextBlock Grid.Row="0">ON/OFF Channels</TextBlock>
-                  <DataGrid
-                    Grid.Row="1"
-                    AutoGenerateColumns="False"
-                    CanUserAddRows="False"
-                    CanUserDeleteRows="False"
-                    ItemsSource="{Binding Path=SelectedComponent.SelectedComposite.BoolSignals}"
-                    CellEditEnding="DataGrid_CellEditEnding"
-                  >
-                    <DataGrid.Columns>
-                      <DataGridTextColumn Header="Ch" Binding="{Binding Path=Channel, UpdateSourceTrigger=PropertyChanged}"/>
-                      <DataGridTextColumn CanUserSort="False" Header="Name" Binding="{Binding Path=Name}"/>
-                      <DataGridTextColumn CanUserSort="False" Header="Desc" Width="*" Binding="{Binding Path=Description}"/>
-                    </DataGrid.Columns>
-                  </DataGrid>
-
-                  <TextBlock Grid.Row="2">Number Channels</TextBlock>
-                  <DataGrid
-                    Grid.Row="3"
-                    CanUserAddRows="False"
-                    CanUserDeleteRows="False"
-                    ItemsSource="{Binding Path=SelectedComponent.SelectedComposite.NumberSignals}"
-                    CellEditEnding="DataGrid_CellEditEnding"
-                  >
-                    <DataGrid.Columns>
-                      <DataGridTextColumn Header="Ch" Binding="{Binding Path=Channel, UpdateSourceTrigger=PropertyChanged}"/>
-                      <DataGridTextColumn CanUserSort="False" Header="Name" Binding="{Binding Path=Name}"/>
-                      <DataGridTextColumn CanUserSort="False" Header="Desc" Width="*" Binding="{Binding Path=Description}"/>
-                      <DataGridTextColumn CanUserSort="False" Header="Min" MinWidth="34" Binding="{Binding Path=NumberRange.Min}"/>
-                      <DataGridTextColumn CanUserSort="False" Header="Max" MinWidth="34" Binding="{Binding Path=NumberRange.Max}"/>
-                    </DataGrid.Columns>
-                  </DataGrid>
-                </Grid>
-              </Grid>
-
-              <Grid Grid.Row="1" Grid.Column="0">
+              <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="Auto"/>
                   <ColumnDefinition Width="*"/>
                   <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Command="{Binding Path=DeleteCompositeCmd}">Delete</Button>
-                <Button Grid.Column="2" Command="{Binding Path=AddSignalCmd}" CommandParameter="composite">Add</Button>
+                <Button Grid.Column="0" Command="{Binding DeleteComponentCmd}">Delete</Button>
+                <Button Grid.Column="2" Command="{Binding AddComponentCmd}">Add</Button>
               </Grid>
             </Grid>
-          </Grid>
+          </Border>
+
+          <GridSplitter Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+          <Border Grid.Column="3" Padding="2">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="16"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="*" MinHeight="16"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="*" MinHeight="40"/>
+              </Grid.RowDefinitions>
+
+              <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">ON/OFF Signals</TextBlock>
+                <DataGrid Grid.Row="1" ItemsSource="{Binding SelectedComponent.BoolSignals}" SelectedItem="{Binding SelectedComponent.SelectedSignal, UpdateSourceTrigger=PropertyChanged}">
+                  <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTemplateColumn Header="Direction">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <TextBlock Text="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                      <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                          <ComboBox ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:SignalDirection}}}" SelectedItem="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Desc" Width="*" Binding="{Binding Description}"/>
+                  </DataGrid.Columns>
+                </DataGrid>
+
+                <Grid Grid.Row="2">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <Button Grid.Column="0" Command="{Binding DeleteSignalCmd}" CommandParameter="bool">Delete</Button>
+                  <Button Grid.Column="2" Command="{Binding AddSignalCmd}" CommandParameter="bool">Add</Button>
+                </Grid>
+              </Grid>
+
+              <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+              <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">Number Signals</TextBlock>
+                <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding SelectedComponent.NumberSignals}" SelectedItem="{Binding SelectedComponent.SelectedSignal, UpdateSourceTrigger=PropertyChanged}">
+                  <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTemplateColumn Header="Direction">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <TextBlock Text="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                      <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                          <ComboBox ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:SignalDirection}}}" SelectedItem="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Min" Binding="{Binding NumberRange.Min}"/>
+                    <DataGridTextColumn Header="Max" Binding="{Binding NumberRange.Max}"/>
+                    <DataGridTextColumn Header="Desc" Width="*" Binding="{Binding Description}"/>
+                  </DataGrid.Columns>
+                </DataGrid>
+
+                <Grid Grid.Row="2">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <Button Grid.Column="0" Command="{Binding DeleteSignalCmd}" CommandParameter="number">Delete</Button>
+                  <Button Grid.Column="2" Command="{Binding AddSignalCmd}" CommandParameter="number">Add</Button>
+                </Grid>
+              </Grid>
+
+              <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+              <Grid Grid.Row="4">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">Composite Signals</TextBlock>
+                <Grid Grid.Row="1">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="148"/>
+                    <ColumnDefinition Width="4"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+                  <ListView Grid.Column="0" MinWidth="100" ItemsSource="{Binding SelectedComponent.CompositeSignals}" SelectedItem="{Binding SelectedComponent.SelectedComposite, UpdateSourceTrigger=PropertyChanged}">
+                    <ListView.ItemTemplate>
+                      <DataTemplate>
+                        <Border Padding="2" Margin="2,4" BorderBrush="Gray" BorderThickness="1">
+                          <Grid>
+                            <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                              <RowDefinition Height="Auto"/>
+                              <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBox Grid.Column="0" Grid.ColumnSpan="3" MinWidth="50" Text="{Binding Name}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Padding="2,0,4,0">Desc</TextBlock>
+                            <TextBox Grid.Row="1" Grid.Column="1" MinWidth="30" Text="{Binding Description}"/>
+                            <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:SignalDirection}}}" SelectedItem="{Binding Direction}"/>
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ListView.ItemTemplate>
+                  </ListView>
+
+                  <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+                  <Grid Grid.Column="2" Grid.RowSpan="2">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="1">
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                      </Grid.RowDefinitions>
+
+                      <TextBlock Grid.Row="0">ON/OFF Channels</TextBlock>
+                      <DataGrid
+                        Grid.Row="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        ItemsSource="{Binding SelectedComponent.SelectedComposite.BoolSignals}"
+                        CellEditEnding="VehicleDataGrid_CellEditEnding"
+                      >
+                        <DataGrid.Columns>
+                          <DataGridTextColumn Header="Ch" Binding="{Binding Channel, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Desc" Width="*" Binding="{Binding Description}"/>
+                        </DataGrid.Columns>
+                      </DataGrid>
+
+                      <TextBlock Grid.Row="2">Number Channels</TextBlock>
+                      <DataGrid
+                        Grid.Row="3"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        ItemsSource="{Binding SelectedComponent.SelectedComposite.NumberSignals}"
+                        CellEditEnding="VehicleDataGrid_CellEditEnding"
+                      >
+                        <DataGrid.Columns>
+                          <DataGridTextColumn Header="Ch" Binding="{Binding Channel, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Desc" Width="*" Binding="{Binding Description}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Min" MinWidth="34" Binding="{Binding NumberRange.Min}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Max" MinWidth="34" Binding="{Binding NumberRange.Max}"/>
+                        </DataGrid.Columns>
+                      </DataGrid>
+                    </Grid>
+                  </Grid>
+
+                  <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto"/>
+                      <ColumnDefinition Width="*"/>
+                      <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Command="{Binding DeleteCompositeCmd}">Delete</Button>
+                    <Button Grid.Column="2" Command="{Binding AddSignalCmd}" CommandParameter="composite">Add</Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Border>
         </Grid>
-      </Border>
-    </Grid>
+
+      </TabItem>
+      <TabItem Header="Blocks">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          
+          <Border Grid.Column="0" Padding="2">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+              </Grid.RowDefinitions>
+              <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Button
+                  Grid.Row="0"
+                  Command="{Binding ReadBlocksCmd}"
+                  ToolTip="WARNING - This will erase all current blocks."
+                >
+                  Read From Stormworks
+                </Button>
+                <Button Grid.Row="1" Command="{Binding OpenBlocksCmd}">Open Blocks</Button>
+                <Button Grid.Row="2" Command="{Binding SaveBlocksCmd}">Save Blocks</Button>
+              </Grid>
+              
+              <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Padding="4,0,0,0">Blocks</TextBlock>
+                <ListView Grid.Row="1" MinWidth="100" ItemsSource="{Binding BlockData.Blocks}" SelectedItem="{Binding SelectedEditBlock, UpdateSourceTrigger=PropertyChanged}">
+                  <ListView.ItemTemplate>
+                    <DataTemplate>
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="Auto"/>
+                          <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                          <RowDefinition Height="Auto"/>
+                          <RowDefinition Height="Auto"/>
+                          <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="0" Grid.ColumnSpan="3" FontWeight="Bold" Text="{Binding Name}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0">Desc</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Description}" MaxWidth="300"/>
+
+                        <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                          </Grid.ColumnDefinitions>
+                          <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                          </Grid.RowDefinitions>
+
+                          <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">Signals</TextBlock>
+                          <TextBlock Grid.Row="1" Grid.Column="0" MinWidth="50">ON/OFF</TextBlock>
+                          <TextBlock Grid.Row="1" Grid.Column="1" MinWidth="50">Number</TextBlock>
+                          <TextBlock Grid.Row="1" Grid.Column="2" MinWidth="50">Composite</TextBlock>
+                          <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding BoolSignals.Count}"/>
+                          <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding NumberSignals.Count}"/>
+                          <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding CompositeSignals.Count}"/>
+                        </Grid>
+                      </Grid>
+                    </DataTemplate>
+                  </ListView.ItemTemplate>
+                </ListView>
+              </Grid>
+            </Grid>
+          </Border>
+
+          <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+          <Border Grid.Column="2" Padding="2">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="16"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="*" MinHeight="16"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="*" MinHeight="40"/>
+              </Grid.RowDefinitions>
+
+              <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">ON/OFF Signals</TextBlock>
+                <DataGrid Grid.Row="1" ItemsSource="{Binding SelectedEditBlock.BoolSignals}" SelectedItem="{Binding SelectedEditBlock.SelectedSignal}">
+                  <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTemplateColumn Header="Direction">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <TextBlock Text="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                      <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                          <ComboBox ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:SignalDirection}}}" SelectedItem="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Desc" Width="*" Binding="{Binding Description}"/>
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Grid>
+
+              <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+              <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">Number Signals</TextBlock>
+                <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding SelectedEditBlock.NumberSignals}" SelectedItem="{Binding SelectedEditBlock.SelectedSignal}">
+                  <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTemplateColumn Header="Direction">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <TextBlock Text="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                      <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                          <ComboBox ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:SignalDirection}}}" SelectedItem="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Min" Binding="{Binding NumberRange.Min}"/>
+                    <DataGridTextColumn Header="Max" Binding="{Binding NumberRange.Max}"/>
+                    <DataGridTextColumn Header="Desc" Width="*" Binding="{Binding Description}"/>
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Grid>
+
+              <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+              <Grid Grid.Row="4">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">Composite Signals</TextBlock>
+                <Grid Grid.Row="1">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="148"/>
+                    <ColumnDefinition Width="4"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+                  <ListView Grid.Column="0" MinWidth="100" ItemsSource="{Binding SelectedEditBlock.CompositeSignals}" SelectedItem="{Binding SelectedEditBlock.SelectedComposite}">
+                    <ListView.ItemTemplate>
+                      <DataTemplate>
+                        <Border Padding="2" Margin="2,4" BorderBrush="Gray" BorderThickness="1">
+                          <Grid>
+                            <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                              <RowDefinition Height="Auto"/>
+                              <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" MinWidth="50" Text="{Binding Name}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Padding="2,0,4,0">Desc</TextBlock>
+                            <TextBlock Grid.Row="1" Grid.Column="1" MinWidth="30" MaxWidth="300" Text="{Binding Description}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" MinWidth="30" MaxWidth="300" Padding="10,0,0,0" Text="{Binding Direction}"/>
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ListView.ItemTemplate>
+                  </ListView>
+
+                  <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+                  <Grid Grid.Column="2" Grid.RowSpan="2">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="1">
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                      </Grid.RowDefinitions>
+
+                      <TextBlock Grid.Row="0">ON/OFF Channels</TextBlock>
+                      <DataGrid
+                        Grid.Row="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        ItemsSource="{Binding SelectedEditBlock.SelectedComposite.BoolSignals}"
+                        CellEditEnding="BlocksDataGrid_CellEditEnding"
+                      >
+                        <DataGrid.Columns>
+                          <DataGridTextColumn Header="Ch" Binding="{Binding Channel, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Desc" Width="*" Binding="{Binding Description}"/>
+                        </DataGrid.Columns>
+                      </DataGrid>
+
+                      <TextBlock Grid.Row="2">Number Channels</TextBlock>
+                      <DataGrid
+                        Grid.Row="3"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        ItemsSource="{Binding SelectedEditBlock.SelectedComposite.NumberSignals}"
+                        CellEditEnding="BlocksDataGrid_CellEditEnding"
+                      >
+                        <DataGrid.Columns>
+                          <DataGridTextColumn Header="Ch" Binding="{Binding Channel, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Desc" Width="*" Binding="{Binding Description}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Min" MinWidth="34" Binding="{Binding NumberRange.Min}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Max" MinWidth="34" Binding="{Binding NumberRange.Max}"/>
+                        </DataGrid.Columns>
+                      </DataGrid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Border>
+        </Grid>
+      </TabItem>
+      <TabItem Header="MCUs">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+
+          <Border Grid.Column="0" Padding="2">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+              </Grid.RowDefinitions>
+              <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Button Grid.Row="0" Command="{Binding ReadSavedMcusCmd}">Read MCUs</Button>
+                <Button Grid.Row="1" Command="{Binding AppendSavedMcusCmd}">Append MCUs</Button>
+                <Button Grid.Row="2" Command="{Binding OpenSavedMcusCmd}">Open MCUs</Button>
+                <Button Grid.Row="3" Command="{Binding SaveMcusCmd}">Save MCUs</Button>
+              </Grid>
+
+              <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Padding="4,0,0,0">Blocks</TextBlock>
+                <ListView Grid.Row="1" MinWidth="100" ItemsSource="{Binding SavedMCUs.MCUs}" SelectedItem="{Binding SelectedEditMcu, UpdateSourceTrigger=PropertyChanged}">
+                  <ListView.ItemTemplate>
+                    <DataTemplate>
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="Auto"/>
+                          <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                          <RowDefinition Height="Auto"/>
+                          <RowDefinition Height="Auto"/>
+                          <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="0" Grid.ColumnSpan="3" FontWeight="Bold" Text="{Binding Name}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0">Desc</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Description}" MaxWidth="300"/>
+
+                        <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                          </Grid.ColumnDefinitions>
+                          <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                          </Grid.RowDefinitions>
+
+                          <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">Signals</TextBlock>
+                          <TextBlock Grid.Row="1" Grid.Column="0" MinWidth="50">ON/OFF</TextBlock>
+                          <TextBlock Grid.Row="1" Grid.Column="1" MinWidth="50">Number</TextBlock>
+                          <TextBlock Grid.Row="1" Grid.Column="2" MinWidth="50">Composite</TextBlock>
+                          <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding BoolSignals.Count}"/>
+                          <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding NumberSignals.Count}"/>
+                          <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding CompositeSignals.Count}"/>
+                        </Grid>
+                      </Grid>
+                    </DataTemplate>
+                  </ListView.ItemTemplate>
+                </ListView>
+                <Grid Grid.Row="2">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <Button Grid.Column="0" Command="{Binding RemoveMcuCmd}">Remove</Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Border>
+
+          <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+          <Border Grid.Column="2" Padding="2">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="16"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="*" MinHeight="16"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="*" MinHeight="40"/>
+              </Grid.RowDefinitions>
+
+              <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">ON/OFF Signals</TextBlock>
+                <DataGrid Grid.Row="1" ItemsSource="{Binding SelectedEditMcu.BoolSignals}" SelectedItem="{Binding SelectedEditMcu.SelectedSignal}">
+                  <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTemplateColumn Header="Direction">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <TextBlock Text="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                      <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                          <ComboBox ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:SignalDirection}}}" SelectedItem="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Desc" Width="*" Binding="{Binding Description}"/>
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Grid>
+
+              <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+              <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">Number Signals</TextBlock>
+                <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding SelectedEditMcu.NumberSignals}" SelectedItem="{Binding SelectedEditMcu.SelectedSignal}">
+                  <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTemplateColumn Header="Direction">
+                      <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                          <TextBlock Text="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellTemplate>
+                      <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                          <ComboBox ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:SignalDirection}}}" SelectedItem="{Binding Direction}"/>
+                        </DataTemplate>
+                      </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Min" Binding="{Binding NumberRange.Min}"/>
+                    <DataGridTextColumn Header="Max" Binding="{Binding NumberRange.Max}"/>
+                    <DataGridTextColumn Header="Desc" Width="*" Binding="{Binding Description}"/>
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Grid>
+
+              <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+              <Grid Grid.Row="4">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">Composite Signals</TextBlock>
+                <Grid Grid.Row="1">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="148"/>
+                    <ColumnDefinition Width="4"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+                  <ListView Grid.Column="0" MinWidth="100" ItemsSource="{Binding SelectedEditMcu.CompositeSignals}" SelectedItem="{Binding SelectedEditMcu.SelectedComposite}">
+                    <ListView.ItemTemplate>
+                      <DataTemplate>
+                        <Border Padding="2" Margin="2,4" BorderBrush="Gray" BorderThickness="1">
+                          <Grid>
+                            <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                              <RowDefinition Height="Auto"/>
+                              <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" MinWidth="50" Text="{Binding Name}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Padding="2,0,4,0">Desc</TextBlock>
+                            <TextBlock Grid.Row="1" Grid.Column="1" MinWidth="30" MaxWidth="300" Text="{Binding Description}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" MinWidth="30" MaxWidth="300" Padding="10,0,0,0" Text="{Binding Direction}"/>
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ListView.ItemTemplate>
+                  </ListView>
+
+                  <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+                  <Grid Grid.Column="2" Grid.RowSpan="2">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="1">
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                      </Grid.RowDefinitions>
+
+                      <TextBlock Grid.Row="0">ON/OFF Channels</TextBlock>
+                      <DataGrid
+                        Grid.Row="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        ItemsSource="{Binding SelectedEditMcu.SelectedComposite.BoolSignals}"
+                        CellEditEnding="McusDataGrid_CellEditEnding"
+                      >
+                        <DataGrid.Columns>
+                          <DataGridTextColumn Header="Ch" Binding="{Binding Channel, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Desc" Width="*" Binding="{Binding Description}"/>
+                        </DataGrid.Columns>
+                      </DataGrid>
+
+                      <TextBlock Grid.Row="2">Number Channels</TextBlock>
+                      <DataGrid
+                        Grid.Row="3"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        ItemsSource="{Binding SelectedEditMcu.SelectedComposite.NumberSignals}"
+                        CellEditEnding="McusDataGrid_CellEditEnding"
+                      >
+                        <DataGrid.Columns>
+                          <DataGridTextColumn Header="Ch" Binding="{Binding Channel, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Desc" Width="*" Binding="{Binding Description}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Min" MinWidth="34" Binding="{Binding NumberRange.Min}"/>
+                          <DataGridTextColumn CanUserSort="False" Header="Max" MinWidth="34" Binding="{Binding NumberRange.Max}"/>
+                        </DataGrid.Columns>
+                      </DataGrid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Border>
+        </Grid>
+      </TabItem>
+    </TabControl>
   </Grid>
 </Window>

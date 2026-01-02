@@ -17,7 +17,8 @@ public class SignalModel : Model
    private string? _desc = null;
    private RangeModel? _range = null;
    private SignalDirection _dir = SignalDirection.INPUT;
-   private CompositeSignalType _type = CompositeSignalType.NUMBER;
+   private CompositeSignalType _compType = CompositeSignalType.NUMBER;
+   private SignalType _type = SignalType.ON_OFF;
    #endregion
 
    #region Constructors
@@ -31,7 +32,7 @@ public class SignalModel : Model
       {
          Name = $"",
          Channel = channel,
-         Type = type,
+         CompType = type,
          NumberRange = type == CompositeSignalType.NUMBER ? new(-1, 1) : null,
       };
    }
@@ -78,7 +79,17 @@ public class SignalModel : Model
       }
    }
 
-   public CompositeSignalType Type
+   public CompositeSignalType CompType
+   {
+      get => _compType;
+      set
+      {
+         _compType = value;
+         OnPropertyChanged();
+      }
+   }
+
+   public SignalType Type
    {
       get => _type;
       set

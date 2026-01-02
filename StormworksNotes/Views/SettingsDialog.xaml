@@ -1,0 +1,68 @@
+﻿<Window x:Class="StormworksNotes.Views.SettingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StormworksNotes.Views"
+        xmlns:viewmodels="clr-namespace:StormworksNotes.ViewModels"
+        d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
+        mc:Ignorable="d"
+        Title="Settings" Height="300" Width="400">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">General</TextBlock>
+    <TextBlock Grid.Row="1" Grid.Column="0">Vehicle Save Path</TextBlock>
+    <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Settings.SavePath}"/>
+    <CheckBox Grid.Row="2" Grid.ColumnSpan="3" IsChecked="{Binding Settings.AutoOpen}">Open Last Vehcile on Startup</CheckBox>
+    <CheckBox Grid.Row="3" Grid.ColumnSpan="3" IsChecked="{Binding Settings.SaveOnClose}">Save Vehicle on Close</CheckBox>
+    <TextBlock Grid.Row="4" Grid.Column="0">Saved Vehicles Folder</TextBlock>
+    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Settings.VehicleSaveDir}"/>
+    <Button Grid.Row="4" Grid.Column="2" Command="{Binding BrowseFolderCmd}" CommandParameter="Vehicles Folder">Browse</Button>
+    <Separator Grid.Row="5" Grid.ColumnSpan="3"/>
+    <TextBlock Grid.Row="6" Grid.Column="0">Game Data Folder</TextBlock>
+    <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Settings.GameDataDir}"/>
+    <Button Grid.Row="6" Grid.Column="2" Command="{Binding BrowseFolderCmd}" CommandParameter="Game Data">Browse</Button>
+    <TextBlock Grid.Row="7" Grid.Column="0">Saved MCUs File</TextBlock>
+    <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Settings.SavedMCUFilePath}"/>
+    <Button Grid.Row="7" Grid.Column="2" Command="{Binding BrowseFileCmd}" CommandParameter="Saved MCUs">Browse</Button>
+    <TextBlock Grid.Row="8" Grid.Column="0">Template Blocks</TextBlock>
+    <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Settings.ComponentBlocksPath}"/>
+    <Button Grid.Row="8" Grid.Column="2" Command="{Binding BrowseFileCmd}" CommandParameter="Blocks">Browse</Button>
+    <TextBlock Grid.Row="9" Grid.Column="0">Block Data Folder</TextBlock>
+    <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Settings.BlockDataDir}"/>
+    <Button Grid.Row="9" Grid.Column="2" Command="{Binding BrowseFolderCmd}" CommandParameter="Block Data">Browse</Button>
+    <Separator Grid.Row="10" Grid.ColumnSpan="3"/>
+
+    <Border Grid.Row="100" Grid.ColumnSpan="3">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" Click="Cancel_Click">Cancel</Button>
+        <Button Grid.Column="2" Click="Save_Click">Save</Button>
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

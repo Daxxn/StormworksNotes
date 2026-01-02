@@ -13,8 +13,4 @@
     <PackageReference Include="SettingsLibrary" Version="2.2.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
-
 </Project>

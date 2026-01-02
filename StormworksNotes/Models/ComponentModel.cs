@@ -9,14 +9,19 @@ using MVVMLibrary;
 
 using Newtonsoft.Json;
 
+using StormworksNotes.Models.Enums;
+
 namespace StormworksNotes.Models;
 public class ComponentModel : Model
 {
    #region Local Props
-   private string? _name = "Component";
+   private string? _name = "New MCU";
    private string? _desc = null;
+   private ComponentType _type = ComponentType.MCU;
    private ObservableCollection<SignalModel> _boolSignals = [];
    private ObservableCollection<SignalModel> _numberSignals = [];
+   private ObservableCollection<SignalModel> _videoSignals = [];
+   private ObservableCollection<SignalModel> _audioSignals = [];
 
    private ObservableCollection<CompositeModel> _compSignals = [];
 
@@ -29,7 +34,32 @@ public class ComponentModel : Model
    #endregion
 
    #region Methods
+   public ComponentModel Copy()
+   {
+      return new()
+      {
+         Name = Name,
+         Description = Description,
+         Type = Type,
+         BoolSignals = new(BoolSignals),
+         NumberSignals = new(NumberSignals),
+         VideoSignals = new(VideoSignals),
+         AudioSignals = new(AudioSignals),
+         CompositeSignals = new(CompositeSignals)
+      };
+   }
 
+   public void Replace(ComponentModel comp)
+   {
+      Name = comp.Name;
+      Description = comp.Description;
+      Type = comp.Type;
+      BoolSignals = new(comp.BoolSignals);
+      NumberSignals = new(comp.NumberSignals);
+      VideoSignals = new(comp.VideoSignals);
+      AudioSignals = new(comp.AudioSignals);
+      CompositeSignals = new(comp.CompositeSignals);
+   }
    #endregion
 
    #region Full Props
@@ -73,12 +103,42 @@ public class ComponentModel : Model
       }
    }
 
+   public ObservableCollection<SignalModel> VideoSignals
+   {
+      get => _videoSignals;
+      set
+      {
+         _videoSignals = value;
+         OnPropertyChanged();
+      }
+   }
+
+   public ObservableCollection<SignalModel> AudioSignals
+   {
+      get => _audioSignals;
+      set
+      {
+         _audioSignals = value;
+         OnPropertyChanged();
+      }
+   }
+
    public ObservableCollection<CompositeModel> CompositeSignals
    {
       get => _compSignals;
       set
       {
          _compSignals = value;
+         OnPropertyChanged();
+      }
+   }
+
+   public ComponentType Type
+   {
+      get => _type;
+      set
+      {
+         _type = value;
          OnPropertyChanged();
       }
    }

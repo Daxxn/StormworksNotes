@@ -13,8 +13,23 @@ public enum CompositeSignalType
 
 public enum SignalDirection
 {
-   OUTPUT,
-   INPUT
+   OUTPUT = 0,
+   INPUT = 1,
+}
+
+public enum SignalType
+{
+   ON_OFF = 0,
+   NUMBER = 1,
+   COMPOSITE = 5,
+   VIDEO = 6,
+   AUDIO = 7,
+}
+
+public enum ComponentType
+{
+   MCU,
+   BLOCK,
 }
 
 public static class ProjConstants
