@@ -17,6 +17,13 @@ public enum SignalDirection
    INPUT = 1,
 }
 
+public enum CompositeSignalDirection
+{
+   OUTPUT = 0,
+   INPUT = 1,
+   DAISY = 2,
+}
+
 public enum SignalType
 {
    ON_OFF = 0,

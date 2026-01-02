@@ -101,7 +101,7 @@ public class SavedMCUs : Model
                                  {
                                     Name = pinName,
                                     Description = pinDesc,
-                                    Direction = signalDir,
+                                    Direction = (CompositeSignalDirection)signalDir,
                                  });
                                  break;
                               case "6":

@@ -348,7 +348,7 @@
                             <TextBox Grid.Column="0" Grid.ColumnSpan="3" MinWidth="50" Text="{Binding Name}"/>
                             <TextBlock Grid.Row="1" Grid.Column="0" Padding="2,0,4,0">Desc</TextBlock>
                             <TextBox Grid.Row="1" Grid.Column="1" MinWidth="30" Text="{Binding Description}"/>
-                            <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:SignalDirection}}}" SelectedItem="{Binding Direction}"/>
+                            <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Source={utils:EnumBindingSource {x:Type enums:CompositeSignalDirection}}}" SelectedItem="{Binding Direction}"/>
                           </Grid>
                         </Border>
                       </DataTemplate>
