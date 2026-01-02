@@ -14,7 +14,7 @@ public class CompositeModel : Model
    #region Local Props
    private string? _name = null;
    private string? _desc = null;
-   private SignalDirection _direction = SignalDirection.INPUT;
+   private CompositeSignalDirection _direction = CompositeSignalDirection.INPUT;
    private SignalModel[] _boolSignals = new SignalModel[ProjConstants.COMP_SIGNAL_LEN];
    private SignalModel[] _numberSignals = new SignalModel[ProjConstants.COMP_SIGNAL_LEN];
    #endregion
@@ -92,7 +92,7 @@ public class CompositeModel : Model
       }
    }
 
-   public SignalDirection Direction
+   public CompositeSignalDirection Direction
    {
       get => _direction;
       set

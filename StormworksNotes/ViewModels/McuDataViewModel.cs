@@ -94,7 +94,7 @@ public class McuDataViewModel : ViewModel
                                  {
                                     Name = pinName,
                                     Description = pinDesc,
-                                    Direction = signalDir,
+                                    Direction = (CompositeSignalDirection)signalDir,
                                  });
                                  break;
                               case "6":

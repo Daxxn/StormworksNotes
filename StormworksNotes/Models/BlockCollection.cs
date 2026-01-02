@@ -113,7 +113,7 @@ public class BlockCollection : Model
                               {
                                  Name = name,
                                  Description = desc,
-                                 Direction = (SignalDirection)modeId,
+                                 Direction = (CompositeSignalDirection)modeId,
                               });
                               break;
                            case 6:
